@@ -1,0 +1,40 @@
+# backend/requirements.txt
+# ──────────────────────────────────────────────────────────────────────────
+# Python dependencies for the College Admission Agent backend.
+#
+# Versions are pinned to a known-good minimum (>=) so deployments are
+# reproducible while still receiving security patches within the major line.
+#
+# To generate a fully-locked requirements file for production:
+#   pip install pip-tools
+#   pip-compile requirements.txt -o requirements.lock
+# ──────────────────────────────────────────────────────────────────────────
+
+# ── Web framework ──────────────────────────────────────────────────────────
+fastapi>=0.111.0,<1.0.0
+uvicorn[standard]>=0.30.0,<1.0.0
+python-multipart>=0.0.9
+
+# ── LangChain core + integrations ─────────────────────────────────────────
+langchain>=0.2.0,<2.0.0
+langchain-core>=0.2.0,<2.0.0
+langchain-community>=0.2.0,<2.0.0
+langchain-chroma>=0.1.2,<2.0.0
+langchain-ibm>=0.1.7,<2.0.0
+langchain-text-splitters>=0.2.0,<2.0.0
+
+# ── IBM watsonx.ai SDK ─────────────────────────────────────────────────────
+ibm-watsonx-ai>=1.0.7,<2.0.0
+
+# ── Vector database ────────────────────────────────────────────────────────
+chromadb>=0.5.0,<2.0.0
+
+# ── PDF loading ────────────────────────────────────────────────────────────
+pypdf>=4.2.0,<5.0.0
+
+# ── Embeddings (local sentence-transformers — no API key required) ─────────
+sentence-transformers>=3.0.0,<4.0.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────
+python-dotenv>=1.0.1
+pydantic>=2.7.0,<3.0.0

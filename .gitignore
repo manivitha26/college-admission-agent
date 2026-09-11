@@ -1,0 +1,55 @@
+# -- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
+
+# -- Virtual environments ----------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# -- Environment / secrets — NEVER commit these ------------------------------
+.env
+*.env
+!.env.example
+
+# -- ChromaDB persistent data ------------------------------------------------
+backend/data/vectorstore/
+data/vectorstore/
+
+# -- Uploaded PDFs (re-ingest from source) -----------------------------------
+backend/data/pdfs/
+data/pdfs/
+
+# -- Node / frontend ---------------------------------------------------------
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# -- IDE / OS ----------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# -- Docker ------------------------------------------------------------------
+docker-compose.override.yml
+
+# -- Logs --------------------------------------------------------------------
+*.log
+logs/

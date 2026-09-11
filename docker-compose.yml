@@ -1,0 +1,91 @@
+# docker-compose.yml — local development / smoke-test stack
+#
+# Starts two containers:
+#   backend   FastAPI + uvicorn  (port 8080)
+#   frontend  nginx + React SPA  (port 3000 → forwards /api/* to backend)
+#
+# Usage
+# ─────
+#   1. Copy backend/.env.example to backend/.env and fill in credentials.
+#   2. docker compose up --build
+#   3. Open http://localhost:3000
+#
+# To ingest PDFs before chatting:
+#   docker compose exec backend python ingest.py
+#
+# Secrets are loaded from backend/.env — this file is in .gitignore and
+# must never be committed to version control.
+
+version: "3.9"
+
+services:
+
+  # ── Backend (FastAPI) ──────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: college-admission-backend:local
+    container_name: caa-backend
+
+    # Inject all secrets and config as environment variables.
+    # In production (IBM Code Engine) these are set in the UI / CLI — no .env
+    # file is ever present inside a running container.
+    env_file:
+      - ./backend/.env          # local only; .gitignore ensures it is never committed
+
+    environment:
+      # Override paths to use the mounted volumes below.
+      CHROMA_PERSIST_DIR: /app/data/vectorstore
+      PDF_UPLOAD_DIR: /app/data/pdfs
+      HF_HOME: /app/data/hf_cache
+      PORT: "8080"
+
+    volumes:
+      # Persist ChromaDB index between container restarts.
+      - chroma_data:/app/data/vectorstore
+      # Persist uploaded PDFs between container restarts.
+      - pdf_data:/app/data/pdfs
+      # Persist the HuggingFace model cache so it isn't re-downloaded.
+      - hf_cache:/app/data/hf_cache
+
+    ports:
+      - "8080:8080"
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s    # allow time for the embedding model to load
+
+    restart: unless-stopped
+
+
+  # ── Frontend (nginx + React) ───────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Empty = use relative URLs; nginx proxies /api/* to backend.
+        VITE_API_BASE_URL: ""
+    image: college-admission-frontend:local
+    container_name: caa-frontend
+
+    ports:
+      - "3000:8080"
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+
+# ── Named volumes ──────────────────────────────────────────────────────────
+volumes:
+  chroma_data:
+  pdf_data:
+  hf_cache:

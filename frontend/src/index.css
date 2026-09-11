@@ -1,0 +1,65 @@
+/* ============================================================
+   Global styles — College Admission Agent
+   ============================================================ */
+
+/* ── Reset & box model ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  /* Colours */
+  --clr-bg:          #f0f4f9;
+  --clr-surface:     #ffffff;
+  --clr-border:      #dde3ec;
+  --clr-primary:     #1a56db;
+  --clr-primary-dk:  #1240a8;
+  --clr-user-bg:     #1a56db;
+  --clr-user-text:   #ffffff;
+  --clr-bot-bg:      #ffffff;
+  --clr-bot-text:    #1e293b;
+  --clr-text-main:   #1e293b;
+  --clr-text-muted:  #64748b;
+  --clr-error-bg:    #fff1f2;
+  --clr-error-text:  #be123c;
+  --clr-error-border:#fecdd3;
+  --clr-source-bg:   #f8fafc;
+  --clr-source-text: #475569;
+
+  /* Spacing & shape */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:  0 4px 12px rgba(0,0,0,.10);
+
+  /* Typography */
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--clr-text-main);
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--clr-bg);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
