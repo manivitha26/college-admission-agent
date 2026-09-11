@@ -15,6 +15,65 @@ A RAG-powered chatbot that answers college admission questions using IBM Granite
 | Embeddings   | sentence-transformers (local)       |
 | Deployment   | IBM Cloud Code Engine (containers)  |
 
+##Architecture diagram
+                    ┌─────────────────────┐
+                    │    Student/User     │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   React Frontend    │
+                    │   Chat Interface    │
+                    └──────────┬──────────┘
+                               │ HTTP
+                               ▼
+                    ┌─────────────────────┐
+                    │    FastAPI Backend  │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    RAG Pipeline     │
+                    │     LangChain       │
+                    └──────┬───────┬──────┘
+                           │       │
+              Retrieve     │       │ Generate
+                           ▼       ▼
+                ┌──────────────┐  ┌──────────────────┐
+                │  ChromaDB    │  │   IBM Granite    │
+                │ Vector Store │  │   watsonx.ai     │
+                └──────┬───────┘  └────────┬─────────┘
+                       │                   │
+                       │ PDF Context      │ Answer
+                       └─────────┬─────────┘
+                                 ▼
+                       ┌──────────────────┐
+                       │ Answer + Sources │
+                       └──────────────────┘
+
+##RAG ingestion process
+
+College PDFs
+     │
+     ▼
+PDF Loader
+     │
+     ▼
+Text Extraction
+     │
+     ▼
+Text Chunking
+     │
+     ▼
+Embeddings
+     │
+     ▼
+ChromaDB
+     │
+     ▼
+Vector Knowledge Base
+
+
 ## Quick Start (local)
 
 ```bash
